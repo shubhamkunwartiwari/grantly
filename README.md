@@ -6,6 +6,8 @@ Grantly is a scholarship platform for students. It brings discovery, eligibility
 
 Built for THE OUTPOST, a 6-hour frontend hackathon by Frontend Arena.
 
+> **How this was made:** Grantly was vibe coded. I described what I wanted to an AI coding tool and iterated on the result, rather than writing every line by hand. Expect rough edges, and review the code before relying on it for anything serious.
+
 ## Features
 
 - **Discover:** search and filter scholarships by level, field, country, amount, deadline and more. Filters are kept in the URL.
@@ -100,6 +102,10 @@ public/                   # Favicon, OG image, robots.txt, sitemap.xml, manifest
 - Sample data only. The scholarships are fictional.
 - Data lives in one browser's local storage and does not sync between devices.
 - The privacy policy and terms are templates for this demo, not legal advice.
+
+## Use it freely
+
+This project is open for anyone to use. You are free to copy it, modify it, build on it and use it for your own projects, personal or commercial. Credit is appreciated but not required. It comes as is, with no warranty.
 
 ## Author
 
