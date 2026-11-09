@@ -109,4 +109,4 @@ This project is open for anyone to use. You are free to copy it, modify it, buil
 
 ## Author
 
-Shubham Kunwar Tiwari
+Shubham Kunwar Tiwary
