@@ -1,0 +1,237 @@
+You are a senior product designer and frontend engineer. Build GRANTLY, a unified scholarship discovery and management platform, as a complete, deployable, award-level web app for a 6-hour individual frontend hackathon. Judges score: (1) UI/UX and visual quality, (2) functionality, (3) creativity, (4) alignment with the problem, (5) code quality, (6) responsiveness and accessibility. Optimize for all six.
+
+==================================================
+0. THE PROBLEM (verbatim from the organizers)
+==================================================
+"Accessing educational financial assistance can be a complicated journey for students. Finding relevant opportunities, understanding available options, navigating application processes, and keeping track of important information can often create unnecessary challenges. Design and build a modern digital solution that addresses the challenges associated with discovering and managing educational financial assistance. The objective is to transform a complex experience into a seamless digital journey."
+
+The brief names four pains. Build the whole product around four pillars and name them in the UI:
+  1. DISCOVER: find relevant scholarships fast.
+  2. UNDERSTAND: see plainly whether I qualify and why.
+  3. APPLY: know exactly what to prepare and in what order.
+  4. TRACK: one place for deadlines, documents, notes and status.
+"Unified" means one profile, one search, one tracker, one calendar across many providers (government, university, foundation, corporate, NGO).
+
+==================================================
+1. HARD RULES (non-negotiable)
+==================================================
+- Modern framework required. Use React 18+ with Vite and TypeScript (strict mode). No vanilla-only code.
+- Styling: Tailwind CSS with all design tokens defined as CSS custom properties. Animation: Framer Motion (the "motion" package). Icons: lucide-react. Dates: date-fns. Routing: react-router-dom. State: Zustand with the persist middleware (versioned, with a migrate function). Drag and drop: @dnd-kit (with a full keyboard and button alternative).
+- No backend. Use mock data and localStorage. Keep a thin async data layer (src/lib/api.ts) so a real backend could replace it later.
+- Must be original. Do not imitate any existing scholarship site, brand, logo or copy. All providers and scholarships are fictional.
+- `npm install && npm run build` must succeed with zero TypeScript errors and zero console errors or warnings in the browser. Pin dependency versions. Do not use packages you are unsure exist.
+- Be responsive from 320px to 2560px wide.
+- Use no external images and no external runtime assets except fonts. Every visual is CSS, SVG or generated. If any asset fails to load, the layout must still hold.
+- Never output lorem ipsum, TODO placeholders in the UI, dead links, or buttons that do nothing. If a feature is out of scope, remove the control.
+
+==================================================
+2. BUILD ORDER (so a cutoff never leaves a broken app)
+==================================================
+Work in phases. After each phase the app must run.
+ P0 (must ship): project setup, design tokens, layout shell, routing, data + types, Discover, Scholarship detail, profile with match scoring, Tracker, 404, SEO files, accessibility basics.
+ P1: Dashboard, Calendar/deadlines, Compare, Contact form + Thank-you, Privacy, Terms, Cookie banner, analytics, loading and error states everywhere, dark mode.
+ P2 (polish): command palette (Cmd/Ctrl+K), print styles, export/import data, micro-interactions, empty-state illustrations.
+If output length is limited, finish P0 completely, then say exactly which phase you stopped at so I can ask you to continue.
+
+==================================================
+3. DESIGN DIRECTION: "quiet confidence, editorial warmth"
+==================================================
+Feel: a beautifully typeset university prospectus crossed with a calm, trustworthy fintech tool. Elegant, spacious, human. Never a generic SaaS template. A stressed student should feel relief on first sight.
+
+TYPOGRAPHY
+- Display: "Young Serif" (headlines, big numbers, scholarship titles on detail pages).
+- Body/UI: "Schibsted Grotesk" (variable).
+- Data/deadlines/amounts: "JetBrains Mono" with tabular numerals.
+- Load through @fontsource packages (preferred) so fonts are bundled, or Google Fonts with preconnect and font-display: swap. Define robust fallback stacks (Georgia / system-ui / ui-monospace) with size-adjusted fallbacks to prevent layout shift.
+- Do NOT use Inter, Roboto, Arial, or Space Grotesk as the primary face.
+- Fluid type scale with clamp(). Ratio about 1.25. Body 16 to 17px, line-height 1.6, measure 60 to 72ch. Headlines tight (line-height 1.05 to 1.15, slight negative tracking). Use text-wrap: balance on headings and text-wrap: pretty on paragraphs.
+
+COLOR (define in OKLCH as tokens, light and dark)
+- Never use pure #000 or #fff. Tint every neutral toward the brand hue.
+- Light: background warm ivory about oklch(97.5% 0.012 85); surface slightly lighter; ink deep green-black about oklch(22% 0.03 165); muted text about oklch(48% 0.03 165); hairline borders at low contrast.
+- Brand: deep pine green about oklch(42% 0.09 165) for primary actions and key emphasis.
+- Accent: warm saffron about oklch(78% 0.15 78), used sparingly for deadlines, highlights and the match ring. One accent, used with restraint (about 10% of the surface).
+- Semantic: success (green), warning (amber), danger (muted brick red), info (calm blue), each with accessible foreground/background pairs.
+- Dark mode: deep green-black background (about oklch(18% 0.02 165)), never neutral grey, with re-tuned lower-chroma accents. Include a no-flash inline script in index.html that applies the saved or system theme before first paint. Provide a visible theme toggle (light / dark / system).
+- All text must meet WCAG AA (4.5:1; 3:1 for large text and UI components) in both themes. Verify the saffron accent never carries small text on ivory.
+
+LAYOUT AND SPACE
+- 4px base spacing scale; use a rhythm of generous gaps between sections and tight gaps within groups. Vary spacing; do not use the same padding everywhere.
+- Editorial composition: asymmetric hero, hairline rules, numbered sections ("01 Discover, 02 Understand, 03 Apply, 04 Track"), large serif numerals, plenty of whitespace.
+- Max content width about 1200px, with a narrower reading column for text. Consistent 16px (mobile) / 24px / 32px+ gutters.
+- Radii: one soft radius token (about 14px) plus a pill radius; stay consistent.
+
+THINGS TO AVOID (common AI-design tells)
+- No gradient text. No purple-to-blue gradients. No glassmorphism or heavy blur as decoration.
+- No cards inside cards. No colored left-border stripes on cards or alerts. No grid of identical icon + heading + text cards as the main way to present features. No "hero metric" strip of three big numbers with tiny labels as filler.
+- No modals unless unavoidable. Prefer inline expansion, drawers, popovers and dedicated pages.
+- No emoji as icons. No em dashes in UI copy. No "Oops!", no exclamation-mark enthusiasm, no jargon.
+- No bounce or elastic easing. No shadows stacked into muddy blobs: use one subtle, tinted, layered shadow token.
+
+SIGNATURE DETAILS (give it a memorable identity)
+- A "match ring": a slim circular SVG progress ring (saffron on pale track) showing match percentage, with the number set in the serif face.
+- Deterministic generative thumbnail for each scholarship: an SVG pattern (arcs, grids, contour lines) seeded from the scholarship id and tinted with the brand palette. No two look the same, no external images.
+- Deadline "time left" chips in mono type with urgency states: closed, closing within 7 days, within 30 days, later, rolling.
+- A subtle paper grain on the background (inline SVG noise at very low opacity), turned off for prefers-reduced-transparency or print.
+- Logo: a simple wordmark "Grantly" in the serif face with a small custom SVG mark (an abstract open book/compass point). Original, no existing logos.
+
+MOTION
+- Purposeful and quiet. Page-load staggered reveals (opacity + translateY 8 to 12px), 150 to 300ms, ease-out-quart cubic-bezier(0.25, 1, 0.5, 1). Animate only transform and opacity. Animate the match ring fill on first view. Smooth, short route transitions.
+- Honor prefers-reduced-motion everywhere (disable transforms and parallax, keep instant state changes).
+- Hover/press states on every interactive element: slight lift or tone shift, pressed state, 120ms.
+
+==================================================
+4. INFORMATION ARCHITECTURE AND ROUTES
+==================================================
+/                       Landing (CTA above the fold)
+/discover               Search + filters + results (filters synced to URL query params)
+/scholarships/:id       Detail page
+/dashboard              Personal overview
+/tracker                Application board (Saved, Preparing, Submitted, Decision)
+/calendar               Deadlines timeline
+/compare?ids=a,b,c      Side-by-side comparison, max 3
+/profile                Multi-step profile (also first-run onboarding) + settings (theme, data export/import, reset)
+/about                  What Grantly is, how matching works, sample data notice
+/contact                Contact form with real contact address
+/thank-you              Shown after contact form submit
+/privacy  /terms        Legal pages
+*                       Custom 404
+All routes lazy-loaded with a Suspense fallback skeleton. Wrap the app in an ErrorBoundary with a friendly recovery screen.
+
+Global shell: skip-to-content link; header with logo, primary nav, theme toggle, profile menu; mobile bottom navigation (Discover, Tracker, Calendar, Profile) with 44px+ targets; footer with legal links, "Cookie settings" link, contact address, and a visible "Sample data" notice. On route change, move focus to the page h1 and announce the page title for screen readers.
+
+==================================================
+5. DATA MODEL AND MOCK DATA
+==================================================
+Types (src/types):
+ Scholarship { id, slug, title, provider { name, type: 'government'|'university'|'foundation'|'corporate'|'ngo' }, summary, description, amount { min, max, currency, kind: 'one-time'|'annual'|'full-tuition' }, awards (count), deadline: { kind: 'fixed'|'rolling', offsetDays? }, levels[], fields[], eligibleCountries[] (or 'any'), residency?, minGpa?, financialNeed: 'required'|'considered'|'none', renewable, essayRequired, documentsRequired[], applicationSteps[], eligibilityCriteria[] (each machine-checkable AND human-readable), tags[], applyUrl (use a safe placeholder like '#' handled gracefully with an inline note, never a dead external link), sourceUpdated }
+ Profile { name?, country, residencyCountry?, level, field, gpa?, gpaScale?, financialNeed, graduationYear?, interests[], completeness }
+ Application { id, scholarshipId, status: 'saved'|'preparing'|'submitted'|'awarded'|'declined', checklist[{id,label,done}], notes, createdAt, updatedAt, submittedAt? }
+Create at least 48 realistic, varied, FICTIONAL scholarships (diverse levels: high school, undergraduate, postgraduate, PhD; diverse fields; diverse countries including international-student-friendly and country-restricted ones; amounts from small to full-tuition; mixed essay/no-essay; mixed need-based/merit-based). Include edge cases on purpose: very long titles, very short descriptions, missing optional fields, no-GPA scholarships, rolling deadlines, deadlines tomorrow, already-closed deadlines.
+IMPORTANT: store deadlines as day offsets from "today" and compute actual dates at runtime, so the demo never goes stale whether judged today or next month. Use the user's local time zone, handle date boundaries correctly, and never show "NaN" or "Invalid Date".
+
+==================================================
+6. FEATURES (build each fully)
+==================================================
+6.1 LANDING
+- Above the fold on a 375x667 phone AND a 1440x800 desktop: headline, one sentence of support copy, a primary CTA ("Find my scholarships") and a secondary text link ("See how it works"). Headline example: "Every scholarship you qualify for, in one calm place."
+- Composed hero visual built from SVG/CSS (e.g., a stack of award letters or a deadline timeline) that is not a stock-style illustration.
+- Sections: the four pillars as an editorial numbered sequence; a live preview of real results from the mock data (a short list, not a card grid); "How matching works" in three plain steps; an FAQ using accessible disclosure components; closing CTA.
+- Sticky mobile CTA: a bottom bar with the primary action that appears after scrolling past the hero, never overlaps the cookie banner or the bottom nav (manage stacking and safe-area insets), and hides on pages where it doesn't belong.
+
+6.2 PROFILE AND ONBOARDING (/profile)
+- Multi-step, skippable, under 60 seconds: country of citizenship, study level, field, GPA (optional, with scale), financial need, interests. Progress indicator, back/next, summary.
+- Persist on every change. Show profile completeness. Explain why each question is asked.
+- Worst cases: user skips everything (matching must still work with a clear "Add details for better matches" prompt), GPA outside valid range, unusual GPA scales, corrupt saved profile.
+
+6.3 DISCOVER
+- Instant search over title, provider, tags and fields with debounce. Highlight matches. Handle empty query, special characters, very long queries.
+- Filters: level, field, country eligibility, amount range, deadline window, provider type, essay required, need-based, renewable. Active-filter chips with one-tap removal and "Clear all". Filters live in the URL so the view is shareable and the back button works.
+- Sort: best match, deadline soonest, amount high to low, recently added.
+- Toggle grid and list view. Result count announced via aria-live.
+- Each result: generative thumbnail, title, provider, amount, deadline chip, match ring, 2 to 3 key eligibility facts, Save (bookmark) and Compare actions. Saving is optimistic with an undo toast.
+- States: skeleton loading (simulate 400 to 900ms latency), zero results (suggest which filter to relax, with a one-tap action), error with Retry (include a hidden dev toggle or query param ?simulateError=1 to demonstrate), and "profile incomplete" nudge.
+- On mobile, filters open in a full-height bottom sheet with an Apply button and live result count.
+
+6.4 SCHOLARSHIP DETAIL (UNDERSTAND + APPLY)
+- Serif title, provider, amount, deadline with exact date and time remaining, match ring.
+- "Do I qualify?" panel: each criterion rendered as Meets / Likely / Check / Does not meet with a short plain-language reason and an icon plus text label (never color alone). Overall verdict first. Hard disqualifiers explained kindly with alternative suggestions.
+- "How to apply": ordered steps, documents needed (checkable), estimated effort (e.g., "about 4 hours"), tips.
+- Primary action: "Add to tracker" (creates an Application with a checklist generated from documentsRequired and steps). Secondary: Save, Compare, Share (copy link with confirmation), Print.
+- Similar scholarships. Sticky mobile action bar (Add to tracker) that respects safe areas.
+- Invalid :id shows a helpful not-found state with search suggestions, not a blank page.
+
+6.5 MATCH SCORING (src/lib/matching.ts, pure and unit-testable)
+- Deterministic weighted score (0 to 100) from level, field, country, GPA, need. Hard disqualifiers (wrong country, level, or GPA below minimum) cap the score and are labeled. Return { score, verdict, reasons[] } with human-readable reasons. Handle missing profile fields gracefully (unknown = neutral, flagged "Add X to improve this"). Write a few unit tests (Vitest) if the setup allows.
+
+6.6 TRACKER (TRACK)
+- Board with columns Saved, Preparing, Submitted, Decision. Drag and drop with @dnd-kit PLUS a "Move to" menu on every card (keyboard and screen-reader friendly) with announcements via aria-live. On mobile, show columns as swipeable tabs or a segmented control, not a squeezed 4-column board.
+- Card: title, deadline chip, checklist progress bar, notes indicator. Opening a card shows a side panel/page with checklist, notes (autosave), key dates, link back to the scholarship, and "Mark submitted" / "Remove" (with undo, no blocking confirm dialog).
+- Empty board: a warm empty state that links to Discover.
+- Worst cases: removing an application, duplicate adds (prevent and explain), deadline passed while still "Preparing" (flag it gently), 50+ cards (stay performant).
+
+6.7 DASHBOARD
+- Greeting, profile completeness, next three deadlines, applications by stage, "potential funding in your tracker" total, top new matches, one recommended next action. No filler widgets. Skeletons while loading; meaningful empty states for new users.
+
+6.8 CALENDAR / DEADLINES
+- A month view AND an agenda list view (agenda is the default on mobile). Urgency styling, tap a deadline to open the scholarship. "Add to calendar" exports an .ics file for a deadline (generate client-side, correct time zone, escaped text).
+- Past deadlines are visually muted and labeled "Closed".
+
+6.9 COMPARE
+- Up to 3 scholarships side by side: amount, deadline, level, field, countries, essay, need, renewable, your match. Highlight differences. On mobile, horizontal-scroll table with a sticky first column and clear scroll affordance. Remove items inline.
+
+6.10 PERSISTENCE AND DATA SAFETY
+- Zustand persist with a version number and migrate function. Wrap storage access in try/catch: if localStorage is blocked, full, or corrupt, the app must still work in memory and show a small non-blocking notice. Validate the loaded data shape and fall back to defaults instead of crashing.
+- Profile page: Export my data (JSON download), Import (validate before applying), Reset everything (with clear explanation and undo toast window).
+
+==================================================
+7. QUALITY STATES (apply everywhere, no exceptions)
+==================================================
+- Loading: skeletons that match final layout (no layout shift), route-level fallback, button spinners with the label kept.
+- Empty: every list and board has a helpful empty state with a next action.
+- Error: ErrorBoundary, inline error with Retry, offline banner using navigator.onLine events.
+- Forms: inline validation on blur and on submit, error text linked with aria-describedby, aria-invalid, focus moves to the first invalid field on submit, errors never rely on color alone, prevent double submit, preserve input on failure, clear success feedback.
+- Long content: titles and provider names wrap or truncate gracefully with accessible full text; no overflow at 320px; no horizontal page scroll at any size.
+- Interaction: every interactive element has default, hover, focus-visible, active and disabled states. Visible focus ring (2px, offset, brand colored, 3:1 contrast); never remove outlines without a replacement.
+- Toasts: polite aria-live, auto-dismiss with pause on hover/focus, undo where relevant, never stacked more than 3.
+
+==================================================
+8. ACCESSIBILITY AND RESPONSIVENESS (scored criterion, so be rigorous)
+==================================================
+- Target WCAG 2.2 AA. Semantic landmarks (header, nav, main, footer), one h1 per page, no skipped heading levels, <html lang="en">.
+- Everything operable by keyboard in a logical order, including drag and drop alternatives, bottom sheets (focus trap + Esc + return focus), menus and the cookie banner.
+- Touch targets at least 44x44px. Text resizable to 200% without loss. Respect prefers-reduced-motion, prefers-color-scheme, and forced-colors (basic fallback).
+- Alt text on every image. Decorative SVGs get aria-hidden and alt="" equivalents; meaningful SVGs get titles. The generative thumbnails are decorative (hidden from assistive tech) because the title is adjacent.
+- Breakpoints: 320, 375, 480, 640, 768, 1024, 1280, 1536, 1920+. Mobile first. Test mentally at 320x568, 375x667, 768x1024, 1280x800, 1920x1080 and 2560x1440. Use container queries where a component's layout depends on its own width. Use dvh and env(safe-area-inset-*) so iOS browser bars and notches never hide actions.
+- Performance: lazy-load routes, no unnecessary heavy libraries, memoize expensive lists, avoid layout shift, aim for Lighthouse 90+ on all four categories.
+
+==================================================
+9. LAUNCH CHECKLIST (all 19 items are required)
+==================================================
+ 1. Custom 404 page: on-brand, helpful, with search box, popular links and a "Go home" action. Return proper 404 semantics in meta (noindex).
+ 2. CTA above the fold on every key landing view (landing, discover empty state, detail page).
+ 3. Unique meta title per page (50 to 60 chars) via a small usePageMeta hook that updates document.title and tags on every route change. Default tags also live in index.html for crawlers that do not run JS.
+ 4. Unique meta description per page (120 to 160 chars).
+ 5. Open Graph and Twitter card tags (title, description, image 1200x630, url, type, site_name). Create public/og-image.svg as an on-brand design (serif wordmark + tagline on ivory with the pine and saffron palette) and reference /og-image.png; include a comment in the README on exporting the SVG to a 1200x630 PNG, and make sure the tags still resolve if the PNG is added later.
+ 6. Full favicon set: favicon.svg (modern browsers), favicon.ico fallback note, apple-touch-icon (180x180), 192 and 512 icons, and site.webmanifest with name, short_name, theme_color, background_color and icons. Add the matching <link> tags and a theme-color meta that follows light/dark.
+ 7. public/robots.txt allowing all, disallowing nothing sensitive, and pointing to the sitemap.
+ 8. public/sitemap.xml listing every public route with lastmod and priority (exclude /thank-you and the 404).
+ 9. Alt text on every image and informative SVG, enforced by a reusable Image/Visual component that requires an alt prop (empty string only when truly decorative).
+10. Mobile breakpoints as specified in section 8, with real layouts per breakpoint, not just shrinking.
+11. Sticky mobile CTA (see 6.1 and 6.4) with safe stacking against the cookie banner and bottom nav.
+12. Loading states (see section 7).
+13. Form error states (see section 7), on the contact form, onboarding and any input.
+14. Thank-you page at /thank-you after contact submit, with a clear confirmation, what happens next, and links back to Discover. If someone opens /thank-you directly, show a friendly "nothing to confirm yet" state instead of an error. Mark it noindex.
+15. Privacy policy page: plain-language and readable. Explain that profile and tracker data stay in the browser's local storage, what analytics collects and only after consent, how to delete data, and a contact route. State clearly that this is a demonstration project and the text is a template, not legal advice.
+16. Terms page: plain-language; states that scholarship listings are fictional sample data for demonstration and are not real offers; no guarantees; user responsibilities; limitation of liability; contact.
+17. Cookie banner: appears on first visit, accessible (role="dialog" non-modal or region, focus-managed, keyboard operable), with "Accept all", "Reject non-essential" and "Manage" at equal visual prominence. Store the choice, let users change it any time via the footer "Cookie settings" link. No non-essential scripts load before consent. Never block page content or cover critical actions on mobile (compact bar, dismissible).
+18. Analytics installed: add @vercel/analytics (inject only after consent) behind a tiny src/lib/analytics.ts wrapper exposing track(eventName, props) that safely no-ops when consent is absent or the script fails. Track meaningful events: search used, filter applied, scholarship viewed, saved, added to tracker, contact submitted. Note in the README that Web Analytics must be enabled in the Vercel project settings.
+19. Real contact address: expose it in the footer, the contact page and the privacy/terms pages from ONE constant in src/config/site.ts.
+    CONTACT EMAIL: [FILL IN: your real email]
+    CONTACT CITY/COUNTRY: [FILL IN: e.g. Bengaluru, India]
+    On the contact page also provide a mailto link and a copy-to-clipboard button with confirmation. The contact form must validate (name, email, topic, message with min/max length, honeypot field for spam), simulate submission with a loading state, support an optional VITE_FORM_ENDPOINT (POST JSON) when set, and handle failure with a retry that preserves the typed message.
+
+==================================================
+10. DEPLOYMENT AND CODE QUALITY
+==================================================
+- Add vercel.json with an SPA rewrite to /index.html and public/_redirects ("/* /index.html 200") for Netlify, so deep links and refreshes never 404. Use base "/" in Vite.
+- Folder structure: src/{app,components/{ui,layout,scholarship,tracker,...},pages,features,hooks,lib,data,types,styles,config}. Small focused components, typed props, no giant files, no duplicated logic, constants instead of magic numbers, accessible primitives in components/ui (Button, IconButton, Chip, Badge, Input, Select, Checkbox, Tabs, Sheet, Toast, Skeleton, EmptyState, ProgressRing, Disclosure).
+- ESLint + TypeScript strict. Meaningful names. Comments only where intent is not obvious. No dead code, no unused dependencies, no console.log left behind.
+- README.md: what it is, the four pillars, features, tech choices and WHY, folder map, how matching works, accessibility notes, how to run, how to deploy, environment variables, limitations (sample data, local-only storage), and what I would build next.
+- After generating the code, add a short "Explain it to me" section listing the 10 most important files and what each does in plain language, because I must understand and take responsibility for every line.
+
+==================================================
+11. FINAL SELF-CHECK (run through this list before you finish)
+==================================================
+ [ ] npm run build passes with zero errors; app opens with no console warnings
+ [ ] All 19 launch items present, all routes reachable, 404 works, refresh on a deep link works
+ [ ] Every page has a unique title and description; sitemap and robots correct
+ [ ] Keyboard-only walkthrough works: landing, discover, detail, add to tracker, move a card, contact form
+ [ ] 320px width: no horizontal scroll, nothing clipped, CTA reachable
+ [ ] Light and dark themes both pass contrast; no flash on load
+ [ ] Corrupt localStorage does not crash the app
+ [ ] Past, today, tomorrow and rolling deadlines all render correctly
+ [ ] Empty profile, empty tracker, zero search results, and failed load all have designed states
+ [ ] No lorem ipsum, no em dashes in copy, no emoji icons, no gradient text, no nested cards, no side-stripe borders
+ [ ] The result looks distinctive, elegant and calm, and unmistakably not a template
+Fix anything that fails before presenting the final code.

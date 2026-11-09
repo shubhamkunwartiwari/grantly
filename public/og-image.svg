@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Young+Serif&amp;family=Schibsted+Grotesk:wght@400;600&amp;display=swap');
+      .title { font-family: 'Young Serif', Georgia, serif; font-size: 64px; fill: #172D21; font-weight: 400; }
+      .brand { font-family: 'Young Serif', Georgia, serif; font-size: 38px; fill: #1C3829; letter-spacing: -0.02em; }
+      .subtitle { font-family: 'Schibsted Grotesk', system-ui, sans-serif; font-size: 26px; fill: #3F5245; font-weight: 400; }
+      .pillar { font-family: 'Schibsted Grotesk', system-ui, sans-serif; font-size: 15px; fill: #5A6D60; font-weight: 600; letter-spacing: 0.08em; }
+    </style>
+  </defs>
+
+  <!-- Background Warm Ivory -->
+  <rect width="1200" height="630" fill="#FAF7F0" />
+  
+  <!-- Subtle Editorial Frame -->
+  <rect x="40" y="40" width="1120" height="550" rx="16" fill="#FFFFFF" stroke="#E6E0D2" stroke-width="1.5" />
+  
+  <!-- Brand Header with Graduation Cap Mark -->
+  <g transform="translate(90, 110)">
+    <!-- Graduation Cap Mark Background -->
+    <rect width="48" height="48" rx="12" fill="#173626" />
+    <g transform="translate(8, 9) scale(0.5)" fill="#FAF7F0">
+      <path d="M32 6L60 20L32 33L4 20L32 6Z"/>
+      <path d="M16 26.5V38C16 38 23 44 32 44C41 44 48 38 48 38V26.5L32 34L16 26.5Z"/>
+      <path d="M12 21V34C10.5 35 9.5 36.5 9.5 38.5C9.5 40.5 10.5 42 12 43L13 47H10L11 43C12.5 42 13.5 40.5 13.5 38.5C13.5 36.5 12.5 35 11 34V21H12Z"/>
+    </g>
+    <text x="64" y="34" class="brand">Grantly</text>
+  </g>
+
+  <!-- Main Headline -->
+  <g transform="translate(90, 240)">
+    <text x="0" y="0" class="title">Every scholarship you qualify for,</text>
+    <text x="0" y="76" class="title">in one calm place.</text>
+    <text x="0" y="145" class="subtitle">Unified scholarship discovery, plain-language eligibility, guided preparation, and deadline tracking.</text>
+  </g>
+
+  <!-- Four Pillars Footer Strip -->
+  <g transform="translate(90, 480)">
+    <line x1="0" y1="0" x2="1020" y2="0" stroke="#ECE6D8" stroke-width="1.5" />
+    <text x="0" y="45" class="pillar">01 DISCOVER</text>
+    <text x="260" y="45" class="pillar">02 UNDERSTAND</text>
+    <text x="540" y="45" class="pillar">03 APPLY</text>
+    <text x="780" y="45" class="pillar">04 TRACK</text>
+  </g>
+
+  <!-- Saffron Accent Stamp -->
+  <circle cx="1030" cy="120" r="12" fill="#E89E36" fill-opacity="0.2"/>
+  <circle cx="1030" cy="120" r="6" fill="#E89E36"/>
+</svg>

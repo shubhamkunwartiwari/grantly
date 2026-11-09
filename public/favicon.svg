@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <style>
+    .cap-bg { fill: #173626; }
+    .cap-stroke { fill: #FAF7F0; }
+    @media (prefers-color-scheme: dark) {
+      .cap-bg { fill: #FAF7F0; }
+      .cap-stroke { fill: #173626; }
+    }
+  </style>
+  <rect width="64" height="64" rx="14" class="cap-bg" />
+  <!-- Graduation cap mortarboard silhouette -->
+  <g transform="translate(8, 12) scale(0.75)" class="cap-stroke">
+    <!-- Cap Diamond Top -->
+    <path d="M32 6L60 20L32 33L4 20L32 6Z" fill="currentColor"/>
+    <!-- Inner skullcap arch -->
+    <path d="M16 26.5V38C16 38 23 44 32 44C41 44 48 38 48 38V26.5L32 34L16 26.5Z" fill="currentColor"/>
+    <!-- Tassel hanging on left -->
+    <path d="M12 21V34C10.5 35 9.5 36.5 9.5 38.5C9.5 40.5 10.5 42 12 43L13 47H10L11 43C12.5 42 13.5 40.5 13.5 38.5C13.5 36.5 12.5 35 11 34V21H12Z" fill="currentColor"/>
+  </g>
+</svg>

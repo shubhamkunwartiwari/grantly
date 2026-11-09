@@ -1,0 +1,8 @@
+{
+  "name": "Grantly - Unified Scholarship Discovery & Management",
+  "description": "A calm, unified scholarship discovery and management platform. Discover opportunities, understand eligibility, prepare applications, and track deadlines seamlessly.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

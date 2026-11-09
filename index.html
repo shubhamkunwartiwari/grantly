@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Grantly – Unified Scholarship Discovery &amp; Management</title>
+    <meta
+      name="description"
+      content="Discover relevant scholarships, understand eligibility plainly, prepare your documents with checklists, and track deadlines across providers in one calm place."
+    />
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#FAF7F0" id="theme-color-meta" />
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Grantly" />
+    <meta property="og:title" content="Grantly – Unified Scholarship Discovery &amp; Management" />
+    <meta
+      property="og:description"
+      content="Discover relevant scholarships, understand eligibility plainly, prepare your documents with checklists, and track deadlines across providers in one calm place."
+    />
+    <meta property="og:image" content="/og-image.svg" />
+    <meta property="og:image:alt" content="Grantly - Unified Scholarship Discovery and Management" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Grantly – Unified Scholarship Discovery &amp; Management" />
+    <meta
+      name="twitter:description"
+      content="Discover relevant scholarships, understand eligibility plainly, prepare your documents with checklists, and track deadlines across providers in one calm place."
+    />
+    <meta name="twitter:image" content="/og-image.svg" />
+
+    <!-- Icons & Manifest -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Google Fonts with preconnect & font-display: swap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Young+Serif&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Grantly",
+        "url": "https://grantly.app",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "All",
+        "description": "Unified scholarship discovery and application tracking platform with plain-language eligibility, personalized matching, and deadline management.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+
+    <!-- No-flash inline theme initialization script -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('grantly-theme');
+          var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var theme = stored ? JSON.parse(stored) : 'system';
+          var isDark = theme === 'dark' || (theme === 'system' && systemDark);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+            var meta = document.getElementById('theme-color-meta');
+            if (meta) meta.setAttribute('content', '#142019');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-surface-bg text-ink-primary font-body antialiased min-h-dvh flex flex-col selection:bg-accent-saffron/20 selection:text-ink-primary">
+    <div id="root" class="flex flex-col min-h-dvh"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "Grantly - Unified Scholarship Discovery & Management",
+  "short_name": "Grantly",
+  "description": "Every scholarship you qualify for, in one calm place.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF7F0",
+  "theme_color": "#1C3829",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
